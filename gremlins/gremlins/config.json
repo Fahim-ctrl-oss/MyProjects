@@ -1,0 +1,15 @@
+{
+  "levels": [
+    {
+      "layout": "level1.txt"
+    },
+    {
+      "layout": "level2.txt"
+    },
+    {
+      "layout": "level3.txt"
+    }
+  ],
+  "lives": 3
+}
+
