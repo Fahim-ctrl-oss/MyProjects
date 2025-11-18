@@ -1,23 +1,22 @@
-import { useSocket } from "./hooks/useSocket";
-import { joinRoom, leaveRoom } from "./utils/socketActions"
+import { Routes, Route, Navigate } from 'react-router-dom'
+import HomePage from '@/pages/HomePage/HomePage'
+import LoginPage from './pages/LoginPage/LoginPage'
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
+import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
+import { useAuth } from './context/Authentication/useAuth'
 
-
-const App = () => {
-  const { socketRef, connected } = useSocket("http://localhost:3000");
-  return (
-    <div style={{ padding: 20, display: "flex", flexDirection: "column", maxWidth: "500px" }}>
-      <h1>Client</h1>
-
-      <button onClick={() => joinRoom(socketRef.current)}>
-        {connected ? "Join Room" : "Connecting..."}
-      </button>
-      <button onClick={() => leaveRoom(socketRef.current)}>
-        {connected ? "Leave Room" : "Connecting..."}
-      </button>
-
-      
-    </div>
-  );
+const RequireAuth = ({ children }: { children: React.JSX.Element }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" replace />;
 };
+
+const App = () => (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/profile-page" element={<RequireAuth><UserProfilePage /></RequireAuth>} />
+      <Route path="*" element={<NotFoundPage/>} />
+    </Routes>
+);
 
 export default App;
